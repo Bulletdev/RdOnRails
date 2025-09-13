@@ -1,0 +1,5 @@
+mark_abandoned_carts:
+  description: "Check for inactive carts and mark as abandoned after 3 hours, remove after 7 days"
+  cron: "0 */1 * * *"  # Run every hour
+  class: MarkCartAsAbandonedJob
+  queue: default
