@@ -1,0 +1,31 @@
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+healthcheckPath = "/"
+healthcheckTimeout = 100
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
+
+[environments.production.variables]
+RAILS_ENV = "production"
+RAILS_MASTER_KEY = { $source = "RAILS_MASTER_KEY" }
+DATABASE_URL = { $source = "DATABASE_URL" }
+REDIS_URL = { $source = "REDIS_URL" }
+
+[environments.production.deploy]
+numReplicas = 1
+sleepApplication = false
+restartPolicyType = "ON_FAILURE"
+
+# Fix database migration issues by using schema load instead of migrate
+# This prevents conflicts with existing database state
+[[environments.production.deploy.hookCommands]]
+command = "bundle exec rails db:schema:load"
+when = "beforeDeploy"
+
+# Start background jobs after deployment
+[[environments.production.deploy.hookCommands]]
+command = "bundle exec sidekiq -d"
+when = "afterDeploy"
