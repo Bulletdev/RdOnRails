@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe MarkCartAsAbandonedJob, type: :job do
@@ -25,36 +27,36 @@ RSpec.describe MarkCartAsAbandonedJob, type: :job do
     end
 
     it 'marks inactive carts as abandoned' do
-      expect {
+      expect do
         described_class.new.perform
-      }.to change { inactive_cart.reload.abandoned }.from(false).to(true)
+      end.to change { inactive_cart.reload.abandoned }.from(false).to(true)
     end
 
     it 'does not mark active carts as abandoned' do
-      expect {
+      expect do
         described_class.new.perform
-      }.not_to change { active_cart.reload.abandoned }
+      end.not_to(change { active_cart.reload.abandoned })
     end
 
     it 'removes old abandoned carts' do
-      expect {
+      expect do
         described_class.new.perform
-      }.to change(Cart, :count).by(-1)
-      
+      end.to change(Cart, :count).by(-1)
+
       expect { old_abandoned_cart.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
 
     it 'does not remove recently abandoned carts' do
-      expect {
+      expect do
         described_class.new.perform
-      }.not_to change { already_abandoned_cart.reload }
+      end.not_to(change { already_abandoned_cart.reload })
     end
 
     it 'logs the execution' do
-      expect(Rails.logger).to receive(:info).with("Starting abandoned cart cleanup job")
+      expect(Rails.logger).to receive(:info).with('Starting abandoned cart cleanup job')
       expect(Rails.logger).to receive(:info).with(/Marked \d+ carts as abandoned/)
       expect(Rails.logger).to receive(:info).with(/Removed \d+ old abandoned carts/)
-      expect(Rails.logger).to receive(:info).with("Completed abandoned cart cleanup job")
+      expect(Rails.logger).to receive(:info).with('Completed abandoned cart cleanup job')
 
       described_class.new.perform
     end

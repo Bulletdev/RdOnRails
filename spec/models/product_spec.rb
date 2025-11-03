@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Product, type: :model do
@@ -17,7 +19,7 @@ RSpec.describe Product, type: :model do
     it 'validates numericality of price' do
       product = described_class.new(price: -1)
       expect(product.valid?).to be_falsey
-      expect(product.errors[:price]).to include("must be greater than or equal to 0")
+      expect(product.errors[:price]).to include('must be greater than or equal to 0')
     end
   end
 end

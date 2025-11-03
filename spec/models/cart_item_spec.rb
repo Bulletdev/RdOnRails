@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe CartItem, type: :model do
@@ -25,19 +27,19 @@ RSpec.describe CartItem, type: :model do
     it 'validates quantity is greater than 0' do
       cart_item = build(:cart_item, quantity: 0)
       expect(cart_item).not_to be_valid
-      expect(cart_item.errors[:quantity]).to include("must be greater than 0")
+      expect(cart_item.errors[:quantity]).to include('must be greater than 0')
     end
 
     it 'validates quantity is a number' do
       cart_item = build(:cart_item, quantity: 'invalid')
       expect(cart_item).not_to be_valid
-      expect(cart_item.errors[:quantity]).to include("is not a number")
+      expect(cart_item.errors[:quantity]).to include('is not a number')
     end
-    
+
     it 'validates uniqueness of product per cart' do
       create(:cart_item, cart: cart, product: product)
       duplicate_item = build(:cart_item, cart: cart, product: product)
-      
+
       expect(duplicate_item).not_to be_valid
       expect(duplicate_item.errors[:cart_id]).to include('has already been taken')
     end
@@ -46,7 +48,7 @@ RSpec.describe CartItem, type: :model do
       another_cart = create(:cart)
       create(:cart_item, cart: cart, product: product)
       duplicate_item = build(:cart_item, cart: another_cart, product: product)
-      
+
       expect(duplicate_item).to be_valid
     end
   end
