@@ -1,3 +1,7 @@
+## PS: Credenciais hardcoded apenas para facilitar o teste
+## Não é recomendado para produção
+## Atenciosamente Michael D.
+
 services:
     db:
         image: postgres:16-alpine
