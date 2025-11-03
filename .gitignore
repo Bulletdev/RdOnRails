@@ -32,3 +32,6 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 .idea
+/security_tests/reports
+/security_tests/scripts/security_tests/reports
+/security_tests/security_tests/reports

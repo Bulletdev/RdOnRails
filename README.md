@@ -1,4 +1,78 @@
 # Desafio técnico e-commerce
+<img src="public/logo.png" alt="Project Logo" width="1920">
+
+[![Ruby Version](https://img.shields.io/badge/ruby-3.3.1-CC342D?logo=ruby)](https://www.ruby-lang.org/)
+[![Rails Version](https://img.shields.io/badge/rails-7.1.3.2-CC342D?logo=rubyonrails)](https://rubyonrails.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16+-blue.svg?logo=postgresql)](https://www.postgresql.org/)
+[![Redis](https://img.shields.io/badge/Redis-5+-red.svg?logo=redis)](https://redis.io/)
+[![Sidekiq](https://img.shields.io/badge/sidekiq-7.4-orange.svg)](https://sidekiq.org)
+[![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](http://creativecommons.org/licenses/by-nc-sa/4.0/)
+## Informações técnicas
+
+### Dependências
+- ruby 3.3.1
+- rails 7.1.3.2
+- postgres 16
+
+- redis 7.0.15 (essa versão do requisito estava com vulnerabilidades conhecidas, mas foi substituída)
+<details>
+ cvedetails.com/version/1749213/Redis-Redis-7.0.15.html
+</details>
+
+- sidekiq 7.4.0
+
+### Como executar o projeto
+
+## Executando com Docker (Recomendado)
+
+Iniciar os serviços:
+```bash
+docker-compose up -d
+```
+
+Instalar as dependências:
+```bash
+bundle install
+```
+
+Configurar o banco de dados de desenvolvimento:
+```bash
+export DATABASE_URL=postgresql://postgres:password@localhost:15432/store_development
+bundle exec rails db:create db:migrate
+```
+
+Executar os testes:
+```bash
+export DATABASE_URL=postgresql://postgres:password@localhost:15432/store_test
+export REDIS_URL=redis://localhost:16379/0
+RAILS_ENV=test bundle exec rails db:create db:migrate
+RAILS_ENV=test bundle exec rspec
+```
+<details>
+  <summary>Como executar o projeto sem o docker</summary>
+## Executando a app sem o docker
+Dado que todas as ferramentas estão instaladas e configuradas:
+
+Instalar as dependências:
+```bash
+bundle install
+```
+
+Executar o sidekiq:
+```bash
+bundle exec sidekiq
+```
+
+Executar projeto:
+```bash
+bundle exec rails server
+```
+
+Executar os testes:
+```bash
+bundle exec rspec
+```
+</details>
 
 ## Nossas expectativas
 
@@ -181,78 +255,6 @@ A aplicação já possui um Dockerfile, que define como a aplicação deve ser c
 
 - Se desejar você pode adicionar a configuração faltante no arquivo `docker-compose.yml` e garantir que a aplicação rode de forma correta utilizando Docker. 
 
-## Informações técnicas
-
-### Dependências
-- ruby 3.3.1
-- rails 7.1.3.2
-- postgres 16
-- redis 7.0.15
-
-### Como executar o projeto
-
-## Executando com Docker (Recomendado)
-
-Iniciar os serviços (PostgreSQL e Redis):
-```bash
-docker-compose up -d db redis
-```
-
-Instalar as dependências:
-```bash
-bundle install
-```
-
-Configurar o banco de dados de desenvolvimento:
-```bash
-export DATABASE_URL=postgresql://postgres:password@localhost:15432/store_development
-bundle exec rails db:create db:migrate
-```
-
-Executar a aplicação:
-```bash
-export DATABASE_URL=postgresql://postgres:password@localhost:15432/store_development
-export REDIS_URL=redis://localhost:16379/0
-bundle exec rails server
-```
-
-Executar o Sidekiq (em outro terminal):
-```bash
-export DATABASE_URL=postgresql://postgres:password@localhost:15432/store_development
-export REDIS_URL=redis://localhost:16379/0
-bundle exec sidekiq
-```
-
-Executar os testes:
-```bash
-export DATABASE_URL=postgresql://postgres:password@localhost:15432/store_test
-export REDIS_URL=redis://localhost:16379/0
-RAILS_ENV=test bundle exec rails db:create db:migrate
-RAILS_ENV=test bundle exec rspec
-```
-
-## Executando a app sem o docker
-Dado que todas as ferramentas estão instaladas e configuradas:
-
-Instalar as dependências:
-```bash
-bundle install
-```
-
-Executar o sidekiq:
-```bash
-bundle exec sidekiq
-```
-
-Executar projeto:
-```bash
-bundle exec rails server
-```
-
-Executar os testes:
-```bash
-bundle exec rspec
-```
 
 ### Como enviar seu projeto
 Salve seu código em um versionador de código (GitHub, GitLab, Bitbucket) e nos envie o link publico. Se achar necessário, informe no README as instruções para execução ou qualquer outra informação relevante para correção/entendimento da sua solução.
