@@ -1,0 +1,78 @@
+inherit_from: .rubocop_todo.yml
+
+require:
+  - rubocop-rails
+  - rubocop-rspec
+  - rubocop-factory_bot
+  - rubocop-capybara
+
+AllCops:
+  TargetRubyVersion: 3.4
+  NewCops: enable
+  SuggestExtensions: false
+  Exclude:
+    - 'bin/**/*'
+    - 'db/schema.rb'
+    - 'db/migrate/**/*'
+    - 'node_modules/**/*'
+    - 'vendor/**/*'
+    - 'tmp/**/*'
+    - 'log/**/*'
+    - 'config/**/*'
+
+#########################
+# === Rails Config === #
+#########################
+
+Rails:
+  Enabled: true
+
+Rails/I18nLocaleTexts:
+  Enabled: false
+
+#########################
+# === Style Rules === #
+#########################
+
+Style/Documentation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Layout/LineLength:
+  Max: 120
+  Exclude:
+    - 'spec/**/*'
+
+Metrics/MethodLength:
+  Max: 30
+
+Metrics/AbcSize:
+  Max: 30
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+    - 'config/routes.rb'
+    - 'lib/tasks/**/*'
+    - 'db/migrate/**/*'
+
+#########################
+# === RSpec Rules === #
+#########################
+
+RSpec/MultipleExpectations:
+  Max: 5
+
+RSpec/ExampleLength:
+  Max: 15
+
+RSpec/NestedGroups:
+  Max: 4
+
+RSpec/IndexedLet:
+  Enabled: false
+
+RSpec/MessageSpies:
+  Enabled: false
