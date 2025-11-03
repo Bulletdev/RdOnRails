@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class CartsController < ApplicationController
-  before_action :ensure_cart, only: [:show, :add_item, :destroy_item]
+  before_action :ensure_cart, only: %i[show add_item destroy_item]
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
   # GET /cart
@@ -46,7 +48,7 @@ class CartsController < ApplicationController
   # DELETE /cart/:product_id
   def destroy_item
     product = Product.find(params[:product_id])
-    
+
     unless @cart.remove_product(product)
       render json: { error: 'Product not found in cart' }, status: :not_found
       return

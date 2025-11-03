@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Cart < ApplicationRecord
   has_many :cart_items, dependent: :destroy
   has_many :products, through: :cart_items
@@ -9,7 +11,7 @@ class Cart < ApplicationRecord
   before_save :ensure_valid_total_price
 
   def calculate_total_price
-    cart_items.sum { |item| item.total_price }
+    cart_items.sum(&:total_price)
   end
 
   def update_total_price!
@@ -18,13 +20,13 @@ class Cart < ApplicationRecord
 
   def add_product(product, quantity)
     cart_item = cart_items.find_by(product: product)
-    
+
     if cart_item
       cart_item.update!(quantity: cart_item.quantity + quantity)
     else
       cart_items.create!(product: product, quantity: quantity)
     end
-    
+
     update_interaction_time!
     update_total_price!
   end
@@ -32,7 +34,7 @@ class Cart < ApplicationRecord
   def remove_product(product)
     cart_item = cart_items.find_by(product: product)
     return false unless cart_item
-    
+
     cart_item.destroy!
     update_interaction_time!
     update_total_price!
